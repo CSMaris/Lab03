@@ -25,7 +25,7 @@ public class SpellCheckerController {
 	String inputProva;
 	String input;
 	String lingua;
-	private Dictionary model=new Dictionary();
+	private Dictionary model;
 	
 	
 	
@@ -49,6 +49,9 @@ public class SpellCheckerController {
     @FXML // fx:id="outputTextList"
     private TextArea outputTextList; // Value injected by FXMLLoader
     
+    @FXML // fx:id="tempoProcesso"
+    private Label tempoProcesso; // Value injected by FXMLLoader
+    
     @FXML // fx:id="combo"
     private ComboBox<String> combo; // Value injected by FXMLLoader
 
@@ -57,10 +60,6 @@ public class SpellCheckerController {
 
     @FXML // fx:id="btnClearText"
     private Button btnClearText; // Value injected by FXMLLoader
-    
-    
-    
-    
     
     
     @FXML
@@ -77,7 +76,7 @@ public class SpellCheckerController {
     model.loadDictionary(lingua);
     
     
-    inputProva=inputTextList.getText();
+   inputProva=inputTextList.getText();
    input=inputProva.replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]"," ");
     String arrayS[]=input.split(" ");
     List<String> lista=new ArrayList<String>();
@@ -85,20 +84,28 @@ public class SpellCheckerController {
     {
     	lista.add(s);
     }
-    	
-    List<RichWord> listaErrate=new ArrayList<RichWord>();
-    listaErrate=model.spellCheckText(lista);
     
-    StringBuilder sb=new StringBuilder();
+  	
+    List<RichWord> listaErrate;
+    double d1=System.nanoTime();
+    //listaErrate=model.spellCheckTextLinear(lista);
+    listaErrate=model.spellCheckTextBinary(lista);
+    //listaErrate=model.spellCheckTextContains(lista);
+   double d2=System.nanoTime();
+   double d3=d2-d1;
+   
     
+   StringBuilder sb=new StringBuilder();
+    sb.append("");
     for(RichWord w:listaErrate)
     {
     	sb.append(w.getParola());
     	sb.append("\n");
     }
     
-    outputTextList.setText(sb.toString());
-    	
+   outputTextList.setText(sb.toString());
+   numErrori.setText("Num errori: "+listaErrate.size());
+   tempoProcesso.setText("process time: "+d3); 	
     	
 
     }
@@ -112,6 +119,7 @@ public class SpellCheckerController {
          assert outputTextList != null : "fx:id=\"outputTextList\" was not injected: check your FXML file 'SpellChecker.fxml'.";
          assert numErrori != null : "fx:id=\"numErrori\" was not injected: check your FXML file 'SpellChecker.fxml'.";
          assert btnClearText != null : "fx:id=\"btnClearText\" was not injected: check your FXML file 'SpellChecker.fxml'.";
+         assert tempoProcesso != null : "fx:id=\"tempoProcesso\" was not injected: check your FXML file 'SpellChecker.fxml'.";
     }
     
     
