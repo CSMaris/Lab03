@@ -109,5 +109,11 @@ public class Dictionary {
 }	
 	return listaPB;	
 	}
+	
+	public void clearDictionary()
+	{
+		lista.clear();
+   
+	}
 
 }

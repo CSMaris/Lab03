@@ -66,6 +66,7 @@ public class SpellCheckerController {
     void doClearText(ActionEvent event) {
     	inputTextList.clear();
     	outputTextList.clear();
+    	model.clearDictionary();
 
     }
 
