@@ -15,12 +15,12 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("SpellChecker.fxml"));//il loader è ciò che trasforma il metacodice fxml in parte grafica
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("SpellChecker.fxml"));  //il loader è ciò che trasforma il metacodice fxml in parte grafica
 			BorderPane root = (BorderPane)loader.load();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
-			Dictionary model = new Dictionary() ;//Il model deve essere la classe modello che fa da wrapper a tutte le altre
+			Dictionary model = new Dictionary() ;  //Il model deve essere la classe modello che fa da wrapper a tutte le altre
 			((SpellCheckerController)loader.getController()).setModel(model) ;
 			
 			
