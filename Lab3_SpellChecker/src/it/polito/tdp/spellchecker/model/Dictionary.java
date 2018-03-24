@@ -10,7 +10,7 @@ import java.util.List;
 public class Dictionary {
 
 	private String lingua;
-	private List<RichWord> lista;
+	private List<String> lista;
 
 	public Dictionary() {
 		lista = new ArrayList<>();
@@ -29,7 +29,7 @@ public class Dictionary {
 			String word;
 			while ((word = br.readLine()) != null) {
 				
-				lista.add(new RichWord(word,true));
+				lista.add(word);
 				
 			}
 			br.close();
@@ -45,8 +45,8 @@ public class Dictionary {
 		for (String s : inputTextList) {
 			flag = false;
 
-			for (RichWord w : lista) {
-				if (w.getParola().equals(s.toLowerCase())) {
+			for (String w : lista) {
+				if (w.equals(s.toLowerCase())) {
 					flag = true;
 					break;
 				}
@@ -61,14 +61,9 @@ public class Dictionary {
 	public List<RichWord> spellCheckTextContains(List<String> inputTextList)
 	{
 		ArrayList<RichWord> listaPC = new ArrayList<>();
-		ArrayList<String> parole = new ArrayList<>();
-		for(RichWord rw:lista)
-		{
-			parole.add(rw.getParola());
-		}
 		for (String s : inputTextList)
 		{
-			if(!parole.contains(s.toLowerCase()))
+			if(!lista.contains(s.toLowerCase()))
 				listaPC.add(new RichWord(s,false));
 		}
 			
@@ -91,11 +86,11 @@ public class Dictionary {
 	{
 		int middle=(low+high)/2;
 		
-		if((s.toLowerCase().compareTo(lista.get(middle).getParola()))>0)
+		if((s.toLowerCase().compareTo(lista.get(middle)))>0)
 		{
 			low=middle+1;
 		}
-		else if((s.toLowerCase().compareTo(lista.get(middle).getParola()))<0)
+		else if((s.toLowerCase().compareTo(lista.get(middle)))<0)
 		{
 			high=middle-1;
 		}

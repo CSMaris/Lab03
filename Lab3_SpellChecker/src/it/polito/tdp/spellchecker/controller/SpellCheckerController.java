@@ -26,7 +26,8 @@ public class SpellCheckerController {
 	String input;
 	String lingua;
 	private Dictionary model;
-	
+	private List<RichWord> listaErrate=new ArrayList<>();
+	private StringBuilder sb=new StringBuilder();
 	
 	
 	
@@ -53,7 +54,7 @@ public class SpellCheckerController {
     private Label tempoProcesso; // Value injected by FXMLLoader
     
     @FXML // fx:id="combo"
-    private ComboBox<String> combo; // Value injected by FXMLLoader
+    private ComboBox<String> combo; // Value injected by FXMLLoader DEVI DIRGLI CHE TIPO DI DATI GESTISCE IN DICHIARAZIONE
 
     @FXML // fx:id="numErrori"
     private Label numErrori; // Value injected by FXMLLoader
@@ -67,19 +68,30 @@ public class SpellCheckerController {
     	inputTextList.clear();
     	outputTextList.clear();
     	model.clearDictionary();
+    	listaErrate.clear();
+    	sb.delete(0, sb.capacity()-1);
 
     }
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	 model.clearDictionary();
+   	  listaErrate.clear();
+   	  sb.delete(0,sb.capacity()-1);
+   	  lingua=null;
+   	  
     	
     lingua=combo.getSelectionModel().getSelectedItem();
-    model.loadDictionary(lingua);
     
+    if(lingua!=null) {
+    	 
+    	  
+       model.loadDictionary(lingua);
+  
     
    inputProva=inputTextList.getText();
-   input=inputProva.replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]"," ");
-    String arrayS[]=input.split(" ");
+   input=(inputProva.replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]", " ")).replaceAll("\\s+", " ");//NB regex expressions, serve per eliminare anche
+    String arrayS[]=input.split(" ");                                                                  //spazi duplicati, oppure StringTokenizer
     List<String> lista=new ArrayList<String>();
     for(String s:arrayS)
     {
@@ -87,7 +99,7 @@ public class SpellCheckerController {
     }
     
   	
-    List<RichWord> listaErrate;
+    
     double d1=System.nanoTime();
     //listaErrate=model.spellCheckTextLinear(lista);
     listaErrate=model.spellCheckTextBinary(lista);
@@ -96,7 +108,7 @@ public class SpellCheckerController {
    double d3=d2-d1;
    
     
-   StringBuilder sb=new StringBuilder();
+   
     sb.append("");
     for(RichWord w:listaErrate)
     {
@@ -106,7 +118,14 @@ public class SpellCheckerController {
     
    outputTextList.setText(sb.toString());
    numErrori.setText("Num errori: "+listaErrate.size());
-   tempoProcesso.setText("process time: "+d3); 	
+   tempoProcesso.setText("process time: "+d3); 
+    }
+    else
+    {
+    	inputTextList.setText("Seleziona la lingua!!!!!!");
+    }
+   
+    
     	
 
     }
@@ -126,7 +145,7 @@ public class SpellCheckerController {
     
     public void setModel(Dictionary model) {
 		this.model = model;
-		this.combo.getItems().addAll("Italiano","Inglese");//Devi dirgli all'inizio il tipo di iggetti in lista combo
+		this.combo.getItems().addAll("Italiano","Inglese");//Devi dirgli all'inizio il tipo di oggetti in lista combo
     }
 }
 
